@@ -5,6 +5,9 @@ from discord.ext import commands
 import random
 import asyncio
 import discord
+from PIL import Image, ImageFilter
+import pytesseract
+import io
 load_dotenv()
 
 token = os.getenv("discord.token")
@@ -21,7 +24,7 @@ tambor[random.randint(0, 5)] = True
 juego_curso = False
 jugadores = []
 turno_actual = 0
-
+pytesseract.pytesseract.tesseract_cmd = r"C:\Users\User\Documents\tesseract\tesseract.exe"
 
 
 @bot.command()
@@ -36,9 +39,7 @@ async def ruletarusa(ctx):
     role = discord.utils.get(ctx.guild.roles, name=role_name)
     jugadores = [member for member in ctx.guild.members if role in member.roles and not member.bot]
     
-    if len(jugadores) <= 1:
-        await ctx.send("No hay suficientes miembros humanos para jugar.")
-        return
+    
 
 
     usuarios_eliminados = []
@@ -97,7 +98,6 @@ async def disparar(ctx):
     await empezar_juego(ctx)
 
 
-
 @bot.command()
 async def detener(ctx):
     global juego_curso
@@ -106,6 +106,27 @@ async def detener(ctx):
         await ctx.send("Se terminó el juego.")
     else:
         await ctx.send("No hay juego en curso.")
+        
+@bot.command()
+async def textoimg(ctx):
+    if ctx.message.attachments:
+        attachment = ctx.message.attachments[0]
+
+        image_data = await attachment.read()
+        image = Image.open(io.BytesIO(image_data))
+        
+        image = image.convert('L')  
+        image = image.filter(ImageFilter.SHARPEN) 
+        
+        
+        text = pytesseract.image_to_string(image)
+        if text.strip():
+            await ctx.send(f'**Texto extraído:**\n{text}')
+        else:
+            await ctx.send("No se encontró texto en la imagen.")
+    else:
+        await ctx.send("No hay texto para extraer.")
+        
 
 
 @bot.event
@@ -131,3 +152,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+
+
