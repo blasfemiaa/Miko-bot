@@ -139,8 +139,8 @@ async def on_message( message: Message):
 
     user_message = message.content.lower()
 
-    if "peron" in user_message:
-        await message.channel.send("PERON PERON, QUE GRANDE SOS")
+    if "miko" in user_message:
+        await message.channel.send("MIKO ES TU DIOS")
     elif "neko neko" in user_message:
         await message.channel.send("Neko neko nyaa")
     elif "neko" in user_message:
@@ -148,9 +148,9 @@ async def on_message( message: Message):
     elif "nekoneko" in user_message:
         await message.channel.send("Neko neko nyaa")
     elif "quien es dios?" in user_message:
-        await message.channel.send("yo soy dios, dios es peron, peron es el creador de todas las cosas en este mundo, peron, te dio la vida.")
+        await message.channel.send("yo soy dios, dios es miko, peron es el creador de todas las cosas en este mundo, miko, te dio la vida.")
     elif "dios" in user_message:
-        await message.channel.send("PERON ES DIOS, PELOTUDO QUE NO ENTENDES ENFERMITO MENTAL GORDO DEPOSITO DE SEMEN MALNACIDO RETRASADO TETON SIN ESCRUPULOS ACEITOSO REBOSADO")
+        await message.channel.send("MIKO ES DIOS, QUE ACASO NO LO ENTIENDES?")
     
 
     await bot.process_commands(message)
