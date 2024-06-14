@@ -1,4 +1,4 @@
-from discord import Intents, Member
+from discord import Intents, Member, Message
 import os
 from dotenv import load_dotenv
 from discord.ext import commands
@@ -9,7 +9,6 @@ from PIL import Image, ImageFilter
 import pytesseract
 import io
 load_dotenv()
-
 token = os.getenv("discord.token")
 
 intents = Intents.all()
@@ -133,25 +132,35 @@ async def textoimg(ctx):
 async def on_ready():
     print("Bot prendido")
 
-
 @bot.event
-async def on_message(message: Member):
+async def on_message( message: Message):
     if message.author == bot.user:
         return
 
-    username = str(message.author)
-    user_message = message.content
-    channel = str(message.channel)
+    user_message = message.content.lower()
 
-    print(f"[{channel}] {username}: \"{user_message}\"")
+    if "peron" in user_message:
+        await message.channel.send("PERON PERON, QUE GRANDE SOS")
+    elif "neko neko" in user_message:
+        await message.channel.send("Neko neko nyaa")
+    elif "neko" in user_message:
+        await message.channel.send("Neko neko nyaa")
+    elif "nekoneko" in user_message:
+        await message.channel.send("Neko neko nyaa")
+    elif "quien es dios?" in user_message:
+        await message.channel.send("yo soy dios, dios es peron, peron es el creador de todas las cosas en este mundo, peron, te dio la vida.")
+    elif "dios" in user_message:
+        await message.channel.send("PERON ES DIOS, PELOTUDO QUE NO ENTENDES ENFERMITO MENTAL GORDO DEPOSITO DE SEMEN MALNACIDO RETRASADO TETON SIN ESCRUPULOS ACEITOSO REBOSADO")
+    
+
     await bot.process_commands(message)
-
 
 def main():
     bot.run(token)
 
 if __name__ == '__main__':
     main()
+
 
 
 
