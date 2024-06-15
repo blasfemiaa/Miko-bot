@@ -25,6 +25,8 @@ jugadores = []
 turno_actual = 0
 pytesseract.pytesseract.tesseract_cmd = r"C:\Users\User\Documents\tesseract\tesseract.exe"
 
+mensaje_cola = asyncio.Queue()
+proceso = False
 
 @bot.command()
 async def ruletarusa(ctx):
@@ -125,36 +127,51 @@ async def textoimg(ctx):
             await ctx.send("No se encontró texto en la imagen.")
     else:
         await ctx.send("No hay texto para extraer.")
-        
-
 
 @bot.event
 async def on_ready():
     print("Bot prendido")
-
+    bot.loop.create_task(proceso_mensaje_cola())
+    
+    
 @bot.event
-async def on_message( message: Message):
+async def on_message(message: discord.Message):
     if message.author == bot.user:
         return
 
-    user_message = message.content.lower()
+    await mensaje_cola.put(message)
 
-    if "miko" in user_message:
-        await message.channel.send("MIKO ES TU DIOS")
-    elif "neko neko" in user_message:
-        await message.channel.send("Neko neko nyaa")
-    elif "neko" in user_message:
-        await message.channel.send("Neko neko nyaa")
-    elif "nekoneko" in user_message:
-        await message.channel.send("Neko neko nyaa")
-    elif "quien es dios?" in user_message:
-        await message.channel.send("yo soy dios, dios es miko, peron es el creador de todas las cosas en este mundo, miko, te dio la vida.")
-    elif "dios" in user_message:
-        await message.channel.send("MIKO ES DIOS, QUE ACASO NO LO ENTIENDES?")
-    
+async def proceso_mensaje_cola():
+    global proceso
 
-    await bot.process_commands(message)
+    while True:
+        if not proceso and not mensaje_cola.empty():
+            proceso = True
+            message = await mensaje_cola.get()
 
+            user_message = message.content.lower()
+            await asyncio.sleep(1)
+
+            if "miko" in user_message:
+                await message.channel.send("MIKO ESTA AQUI")
+            elif "neko neko" in user_message:
+                await message.channel.send("Neko neko nyaa")
+            elif "neko" in user_message:
+                await message.channel.send("Neko neko nyaa")
+            elif "nekoneko" in user_message:
+                await message.channel.send("Neko neko nyaa")
+            elif "quien es dios?" in user_message:
+                await message.channel.send("yo soy dios, dios es miko, peron es el creador de todas las cosas en este mundo, miko, te dio la vida.")
+            elif "dios" in user_message:
+                await message.channel.send("MIKO ES DIOS, ACASO NO LO ENTENDISTE?")
+
+            await asyncio.sleep(1)
+
+            await bot.process_commands(message)
+            proceso = False
+
+        await asyncio.sleep(1)
+        
 def main():
     bot.run(token)
 
