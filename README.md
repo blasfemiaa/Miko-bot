@@ -29,7 +29,7 @@ Registro de Cambios
 
 **English Version**
 
-Bot in Development
+
 This bot is under development and includes various functions that I update regularly.
 
 Changelog
