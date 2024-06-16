@@ -1,5 +1,6 @@
 ## MIKO BOT 
 **Versión en Español**
+
 Este bot está en desarrollo y contiene varias funciones que voy actualizando regularmente.
 
 Registro de Cambios
